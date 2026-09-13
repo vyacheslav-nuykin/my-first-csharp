@@ -1,26 +1,18 @@
-﻿# 🌤️ Weather Hub
+# my-first-csharp
 
-A small, well-structured weather microservice built with C# and ASP.NET Core 8.
-Fetches real-time weather from the [Open-Meteo](https://open-meteo.com/) API — no API key required.
+A weather microservice on ASP.NET Core 8 Minimal API. Fetches real-time weather
+from [Open-Meteo](https://open-meteo.com/) — no API key required.
 
-> "Build systems that outlive you."
+Built as my first C# project to practice `record`, dependency injection,
+`IHttpClientFactory`, and Minimal API.
 
-## ✅ Features
-
-- **GET `/api/v1/weather/current`** — current weather for any coordinates
-- **GET `/`** — simple health probe
-- Clean, modular structure (`Models`, `Services`, `Endpoints`)
-- Uses `IHttpClientFactory` for proper HTTP lifecycle management
-- Interactive Swagger UI in development mode
-- Built on **Minimal API** — no controllers, no ceremony
-
-## 📥 Endpoints
+## Endpoints
 
 | Endpoint | Method | Description |
 |---|---|---|
-| `/` | GET | Returns `{ "service": "Weather Hub", "status": "alive" }` |
+| `/` | GET | Health probe: `{"service":"Weather Hub","status":"alive"}` |
 | `/api/v1/weather/current?lat=..&lon=..` | GET | Current weather for given coordinates |
-| `/swagger` | GET | Interactive API documentation (dev only) |
+| `/swagger` | GET | Swagger UI (development only) |
 
 ### Example response
 
@@ -36,69 +28,48 @@ Fetches real-time weather from the [Open-Meteo](https://open-meteo.com/) API —
 }
 ```
 
-## 🛠️ Run Locally
+## Run locally
 
-### Prerequisites
-
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-
-### Steps
+Requires [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
 
 ```bash
-# Clone the repo
-git clone https://github.com/vyacheslav-nuykin/MyFirstCsharp.git
-cd MyFirstCsharp
-
-# Run the server
+git clone https://github.com/vyacheslav-nuykin/my-first-csharp.git
+cd my-first-csharp
 dotnet run
 ```
 
-The server starts on `http://localhost:5183` (the exact port is shown in the console).
-Open Swagger UI in your browser or try the API directly:
+The server starts on `http://localhost:5183` (exact port is printed in the console).
 
 ```bash
 curl "http://localhost:5183/api/v1/weather/current?lat=59.91&lon=10.75"
 ```
 
-## 📁 Project Structure
+## Structure
 
 ```
-MyFirstCsharp/
+my-first-csharp/
 ├── Program.cs                     # Entry point, DI setup
 ├── Endpoints/
 │   └── WeatherEndpoints.cs        # HTTP routes (Minimal API)
 ├── Models/
-│   ├── WeatherResponse.cs         # Public DTO for our API
+│   ├── WeatherResponse.cs         # Public DTO
 │   └── OpenMeteoResponse.cs       # Internal DTO for Open-Meteo
 ├── Services/
 │   ├── IWeatherService.cs         # Service contract
 │   └── OpenMeteoService.cs        # HTTP client to Open-Meteo
 ├── Properties/
-│   └── launchSettings.json        # Run profiles
-├── appsettings.json               # App configuration
-└── MyFirstCsharp.http             # Quick HTTP requests for testing
+│   └── launchSettings.json
+├── appsettings.json
+└── my-first-csharp.http           # Quick HTTP requests for testing
 ```
 
-## 💡 Why This Project?
+## Notes
 
-- **Learn C#**: practice with `record`, DI, `HttpClient`, Minimal API
-- **Real integration**: not a fake `TODO` list — talks to a real external service
-- **No API keys**: Open-Meteo is free and open, so anyone can clone and run
-- **Minimal**: no unnecessary dependencies, no layers for the sake of layers
+- The public `WeatherResponse` and internal `OpenMeteoResponse` are separate DTOs,
+  so changes to the upstream API don't leak into this API's contract.
+- `IHttpClientFactory` is used via `AddHttpClient<IWeatherService, OpenMeteoService>()`
+  for proper connection pooling.
 
-## 🌟 Future Ideas
+## License
 
-- Add caching (Redis) for frequently requested coordinates
-- Add `history` endpoint backed by PostgreSQL
-- Add xUnit tests + GitHub Actions CI
-- Add Prometheus metrics for observability
-
-## 🙏 Thanks & Feedback
-
-Created by [Вячеслав Нуйкин](https://github.com/vyacheslav-nuykin) — self-taught software engineer focused on backend development and scalable systems.
-
-Feel free to fork, star, or submit issues!
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE.txt](LICENSE.txt) file for details.
+MIT — see [LICENSE.txt](LICENSE.txt).
