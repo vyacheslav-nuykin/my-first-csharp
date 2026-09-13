@@ -1,6 +1,8 @@
 @MyFirstCsharp_HostAddress = http://localhost:5183
 
-GET {{MyFirstCsharp_HostAddress}}/weatherforecast/
+GET {{MyFirstCsharp_HostAddress}}/
 Accept: application/json
 
 ###
+GET {{MyFirstCsharp_HostAddress}}/api/v1/weather/current?lat=59.91&lon=10.75
+Accept: application/json
